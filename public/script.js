@@ -1,15 +1,14 @@
 var socket = io();
-socket.on('path', function(msg) {
-	console.log(msg);
-	for(var i = 0; i < msg.length; i++) {
-		recieveDraw(msg[i]);
-	}
-})
 socket.on('connection', function(msg) {
 	for(var i = 0; i < msg.length; i++) {
 		recieveDraw(msg[i]);
 	}
 })
+
+socket.on('path', function(msg){
+    recieveDraw(msg);
+});
+
 
 var canvas, ctx = null;
 var prevX, prevY, currX, currY = 0;
@@ -42,7 +41,6 @@ function draw() {
 	ctx.lineWidth = 3;
 	ctx.stroke();
 	ctx.closePath();
-
 
 	socket.emit("path", {px: prevX, py: prevY, cx: currX, cy: currY, color: color});
 }
